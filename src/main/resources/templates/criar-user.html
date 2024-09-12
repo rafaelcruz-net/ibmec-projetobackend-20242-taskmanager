@@ -1,0 +1,18 @@
+<html>
+
+<head th:replace="~{header::header}"></head>
+
+<body>
+    <div class="container">
+    <form action="/user/saveUser" method="post">
+        <legend>Criar uma nova Usuário</legend>
+        <div class="mb-3">
+            <label class="form-label">Nome do usuário</label>
+            <input class="form-control" type="text" id="name" name="name" />
+        </div>
+        <input type="submit" value="Criar Usuário" class="btn btn-primary">
+    </form>
+    </div>
+</body>
+
+</html>

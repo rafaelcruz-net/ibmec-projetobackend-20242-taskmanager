@@ -1,0 +1,26 @@
+<html>
+
+<head th:replace="~{header::header}"></head>
+
+<body>
+    <div class="container">
+    <form th:action="@{/task/{id}/saveTask(id=${id_user})}" method="post">
+        <legend>Criar uma nova tarefa</legend>
+        <div class="mb-3">
+            <label class="form-label">Nome da tarefa</label>
+            <input class="form-control" type="text" id="name" name="name" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Responsavel da tarefa</label>
+            <input class="form-control" type="text" id="owner" name="owner" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Status da tarefa</label>
+            <input class="form-control" type="text" id="status" name="status" />
+        </div>
+        <input type="submit" value="Criar Tarefa" class="btn btn-primary">
+    </form>
+    </div>
+</body>
+
+</html>
