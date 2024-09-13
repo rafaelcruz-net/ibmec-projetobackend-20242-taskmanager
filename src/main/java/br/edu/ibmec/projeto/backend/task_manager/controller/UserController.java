@@ -3,6 +3,7 @@ package br.edu.ibmec.projeto.backend.task_manager.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +14,8 @@ import br.edu.ibmec.projeto.backend.task_manager.model.Task;
 import br.edu.ibmec.projeto.backend.task_manager.model.User;
 import br.edu.ibmec.projeto.backend.task_manager.repository.UserRepository;
 import ch.qos.logback.core.testUtil.RandomUtil;
+import jakarta.validation.Valid;
+
 import java.util.Optional;
 
 @Controller
@@ -30,12 +33,17 @@ public class UserController {
     }
 
     @GetMapping("/create")
-    public String createUser() {
+    public String createUser(User user) {
         return "criar-user";
     }
 
     @PostMapping("/saveUser")
-    public String saveUser(@ModelAttribute User user) {
+    public String saveUser(@Valid @ModelAttribute User user, BindingResult result) {
+
+        if (result.hasErrors()) {
+            return "criar-user";
+        }
+
         // Inserção no banco de dados
         repository.save(user); 
 
@@ -62,7 +70,13 @@ public class UserController {
     }
 
     @PostMapping("/editUser/{id}")
-    public String editUser(@PathVariable("id") Integer id, @ModelAttribute User newData) {
+    public String editUser(@PathVariable("id") Integer id, @Valid @ModelAttribute User newData, BindingResult result, Model modelAndView) {
+
+        if (result.hasErrors()) {
+            modelAndView.addAttribute("editUser", newData);
+            return "editar-user";
+        }
+
         Optional<User> optUser = repository.findById(id);
 
         User user = optUser.get();

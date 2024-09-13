@@ -4,11 +4,12 @@
 
 <body>
     <div class="container">
-    <form action="/user/saveUser" method="post">
+    <form action="/user/saveUser" method="post" th:object="${user}">
         <legend>Criar uma nova Usuário</legend>
         <div class="mb-3">
             <label class="form-label">Nome do usuário</label>
-            <input class="form-control" type="text" id="name" name="name" />
+            <input class="form-control" type="text" th:field="*{name}" id="name" name="name" />
+            <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="form-error"></span>
         </div>
         <input type="submit" value="Criar Usuário" class="btn btn-primary">
     </form>

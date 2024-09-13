@@ -13,6 +13,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 
 @Data
 @Entity
@@ -22,6 +24,7 @@ public class User {
     private int id;
 
     @Column
+    @NotEmpty(message = "Campo nome não pode ser vazio")
     private String name;
 
     @OneToMany

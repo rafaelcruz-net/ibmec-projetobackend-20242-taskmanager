@@ -12,7 +12,6 @@
             <tr>
                 <td>Id</td>
                 <td>Nome</td>
-                <td>Responsavel</td>
                 <td>Status</td>
                 <td>Data de Criação</td>
                 <td>Ações</td>
@@ -22,7 +21,6 @@
             <tr th:each="task : ${listaTarefas}">
                 <td th:text="${task.id}"></td>
                 <td th:text="${task.name}"></td>
-                <td th:text="${task.owner}"></td>
                 <td th:text="${task.status}"></td>
                 <td th:text="${task.createdDate}"></td>
                 <td>

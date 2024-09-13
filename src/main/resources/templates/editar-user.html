@@ -4,11 +4,12 @@
 
 <body>
     <div class="container">
-        <form th:action="@{/user/editUser/{id}(id=${editUser.id})}" method="post">
+        <form th:action="@{/user/editUser/{id}(id=${editUser.id})}" method="post" th:object="${editUser}">
             <legend>Editar Usuário</legend>
             <div class="mb-3">
                 <label class="form-label">Nome do Usuário</label>
-                <input class="form-control" type="text" id="name" name="name" th:field="${editUser.name}" />
+                <input class="form-control" type="text" id="name" name="name" th:field="*{name}" />
+                <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
             </div>
             <input type="submit" value="Editar Usuário" class="btn btn-primary">
         </form>

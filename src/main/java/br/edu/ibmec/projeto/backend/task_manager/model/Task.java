@@ -7,6 +7,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 
 @Data
@@ -18,12 +20,11 @@ public class Task {
     private Integer id;
     
     @Column
+    @NotEmpty(message = "Campo nome da tarefa não pode ser vazio")
     private String name;
     
     @Column
-    private String owner;
-    
-    @Column
+    @NotEmpty(message = "Campo status da tarefa não pode ser vazio")
     private String status;
     
     @Column

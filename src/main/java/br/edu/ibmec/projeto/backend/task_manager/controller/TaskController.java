@@ -8,20 +8,20 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 import br.edu.ibmec.projeto.backend.task_manager.model.Task;
 import br.edu.ibmec.projeto.backend.task_manager.model.User;
 import br.edu.ibmec.projeto.backend.task_manager.repository.TaskRepository;
 import br.edu.ibmec.projeto.backend.task_manager.repository.UserRepository;
 import ch.qos.logback.core.testUtil.RandomUtil;
-import jakarta.websocket.server.PathParam;
+import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 
 @Controller
@@ -45,13 +45,18 @@ public class TaskController {
     }
 
     @GetMapping("/create")
-    public String createTask(@PathVariable("id_user") int id_user, Model modelView) {
+    public String createTask(@PathVariable("id_user") int id_user, Model modelView, Task task) {
         modelView.addAttribute("id_user", id_user);
         return "criar-task";
     }
 
     @PostMapping("/saveTask")
-    public String saveTask(@ModelAttribute Task task, @PathVariable("id_user") int id_user) {
+    public String saveTask(@PathVariable("id_user") int id_user, @Valid @ModelAttribute Task task, BindingResult result, Model modelView) {
+
+        if (result.hasErrors()) {
+            modelView.addAttribute("id_user", id_user);
+            return "criar-task";
+        }
         
         //Obtendo o usuário a ser adicionado a tarefa
         User user = userRepository.findById(id_user).get();
@@ -91,13 +96,17 @@ public class TaskController {
     }
 
     @PostMapping("/editTask/{id}")
-    public String editTask(@PathVariable("id") Integer id, @ModelAttribute Task newData) {
+    public String editTask(@PathVariable("id") Integer id, @ModelAttribute Task newData, BindingResult result) {
+        
+        if (result.hasErrors()) {
+            return "editar-task";
+        }
+        
         Optional<Task> optTask = repository.findById(id);
 
         Task task = optTask.get();
 
         task.setName(newData.getName());
-        task.setOwner(newData.getOwner());
         task.setStatus(newData.getStatus());
 
         repository.save(task);
